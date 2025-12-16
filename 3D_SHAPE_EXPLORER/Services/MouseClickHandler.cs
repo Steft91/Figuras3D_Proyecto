@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Figuras3D_Proyecto.Models;
+using Figuras3D_Proyecto.Utils;
+using Guna.UI2.WinForms;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Figuras3D_Proyecto.Models;
-using Figuras3D_Proyecto.Utils;
-using Guna.UI2.WinForms;
+using static Figuras3D_Proyecto.Models.Shape3D;
 
 namespace Figuras3D_Proyecto.Services
 {
@@ -14,6 +15,9 @@ namespace Figuras3D_Proyecto.Services
         private readonly SceneManager sceneManager;
         private readonly PictureBox canvas;
         private readonly Guna2RadioButton rbtnVertexes, rbtnEdges, rbtnFaces, rbtnPaintFace; private Color currentPaintColor;
+        private MaterialType currentMaterial = MaterialType.Solid;
+
+
 
         public MouseClickHandler(SceneManager sceneManager, PictureBox canvas,
             Guna2RadioButton rbtnVertexes, Guna2RadioButton rbtnEdges, Guna2RadioButton rbtnFaces, Guna2RadioButton rbtnPaintFace,
@@ -28,8 +32,9 @@ namespace Figuras3D_Proyecto.Services
 
             this.currentPaintColor = paintColor;
         }
+        
 
-        public void HandleMouseClick(Point mouseLocation)
+    public void HandleMouseClick(Point mouseLocation)
         {
             sceneManager.SelectedVertexIndex = null;
             sceneManager.SelectedEdge = null;
@@ -39,7 +44,7 @@ namespace Figuras3D_Proyecto.Services
             if (rbtnVertexes.Checked)
                 HandleVertexClick(mouseLocation);
             else if (rbtnEdges.Checked)
-                HandleEdgeClick(mouseLocation);
+                HandleLightingClick(mouseLocation);
             else if (rbtnFaces.Checked)
                 HandleFaceClick(mouseLocation);
             else if (rbtnPaintFace.Checked)
@@ -47,6 +52,13 @@ namespace Figuras3D_Proyecto.Services
             else
                 HandleObjectClick(mouseLocation);
         }
+
+        private void HandleLightingClick(Point mouseLocation)
+        {
+            // Si quieres que cambie con cualquier click:
+            canvas.Invalidate();
+        }
+
 
         private void HandleVertexClick(Point mouseLocation)
         {
@@ -126,6 +138,7 @@ namespace Figuras3D_Proyecto.Services
                                 shape.IsSelected = true;
                                 sceneManager.SelectedFace = face;
                                 sceneManager.SelectedShapeIndex = sceneManager.Shapes.IndexOf(shape);
+                                shape.Material = currentMaterial;
 
                                 canvas.Invalidate();
                                 return;
@@ -221,5 +234,12 @@ namespace Figuras3D_Proyecto.Services
             this.currentPaintColor = color;
         }
 
-    }
+        
+
+        public void UpdateMaterial(MaterialType material)
+            {
+                currentMaterial = material;
+            }
+
+}
 }

@@ -17,7 +17,7 @@ namespace Figuras3D_Proyecto.Services
                 var projectedPoints = shape.Points.Select(p => Projection3D.Project(p, panelSize)).ToList();
 
                 DrawCenter(g, projectedPoints);
-                DrawFaces(g, shape, projectedPoints);
+                DrawFaces(g, shape, projectedPoints, sceneManager); // <-- CAMBIO
                 DrawEdges(g, shape, projectedPoints);
                 DrawSelection(g, shape, sceneManager, projectedPoints);
             }
@@ -30,14 +30,15 @@ namespace Figuras3D_Proyecto.Services
             g.FillEllipse(Brushes.Red, avgX - 3, avgY - 3, 6, 6);
         }
 
-        private void DrawFaces(Graphics g, Shape3D shape, List<PointF> points)
+        // <-- CAMBIO: ahora recibe sceneManager
+        private void DrawFaces(Graphics g, Shape3D shape, List<PointF> points, SceneManager sceneManager)
         {
             for (int i = 0; i < shape.Faces.Count; i++)
             {
                 var face = shape.Faces[i];
-                var polygon = face.Select(index => points[index]).ToArray();
-                Brush fill = shape.IsPainted ? new SolidBrush(shape.PaintColor) : Brushes.Gray;
-                ShapePainter.DrawFace(g, points, face, shape);
+
+                // CAMBIO: usar la versión con sombreado
+                ShapePainter.DrawFace(g, points, face, shape, sceneManager);
             }
         }
 
@@ -57,7 +58,6 @@ namespace Figuras3D_Proyecto.Services
                     }
                 }
             }
-
         }
 
         private void DrawSelection(Graphics g, Shape3D shape, SceneManager sceneManager, List<PointF> points)
@@ -74,8 +74,6 @@ namespace Figuras3D_Proyecto.Services
                 }
             }
 
-
-
             if (sceneManager.SelectedShapeIndex.HasValue &&
                 sceneManager.SelectedEdge != null &&
                 sceneManager.Shapes.IndexOf(shape) == sceneManager.SelectedShapeIndex.Value)
@@ -90,7 +88,6 @@ namespace Figuras3D_Proyecto.Services
                 }
             }
 
-
             if (sceneManager.SelectedShapeIndex.HasValue &&
                  sceneManager.SelectedFace != null &&
                  sceneManager.Shapes.IndexOf(shape) == sceneManager.SelectedShapeIndex.Value &&
@@ -102,7 +99,6 @@ namespace Figuras3D_Proyecto.Services
                     g.DrawPolygon(purplePen, facePoints);
                 }
             }
-
         }
 
         private bool IsValidFace(List<int> face, int pointCount)

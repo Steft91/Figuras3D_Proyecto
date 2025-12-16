@@ -58,6 +58,12 @@
     <Compile Include="Forms\ColorPickerForm.Designer.cs">
       <DependentUpon>ColorPickerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\MaterialPickerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MaterialPickerForm.Designer.cs">
+      <DependentUpon>MaterialPickerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Sphere.cs" />
     <Compile Include="Services\MouseClickHandler.cs" />
     <Compile Include="Services\SceneManager.cs" />
@@ -92,6 +98,9 @@
     <Compile Include="Utils\ShapeFactory.cs" />
     <EmbeddedResource Include="Forms\ColorPickerForm.resx">
       <DependentUpon>ColorPickerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MaterialPickerForm.resx">
+      <DependentUpon>MaterialPickerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ShapeExplorerForm.resx">
       <DependentUpon>ShapeExplorerForm.cs</DependentUpon>

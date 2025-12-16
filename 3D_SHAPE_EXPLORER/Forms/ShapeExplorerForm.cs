@@ -1,4 +1,5 @@
-﻿using Figuras3D_Proyecto.Models;
+﻿using Figuras3D_Proyecto.Forms;
+using Figuras3D_Proyecto.Models;
 using Figuras3D_Proyecto.Services;
 using Figuras3D_Proyecto.Utils;
 using Guna.UI2.WinForms;
@@ -21,6 +22,7 @@ namespace Figuras3D_Proyecto
     {
         private SceneManager sceneManager = new SceneManager();
         private ShapeRenderer renderer = new ShapeRenderer();
+        private MaterialType currentMaterial = MaterialType.Solid;
         private KeyboardController inputController;
         private string lastSelected = "";
         private Color currentPaintColor = Color.Yellow;
@@ -30,6 +32,7 @@ namespace Figuras3D_Proyecto
         public ShapeExplorerForm()
         {
             InitializeComponent();
+            HideAllSelectors();
 
             gunacmbFigures.KeyDown += ComboBox_BlockArrows;
             gunacmbMode.KeyDown += ComboBox_BlockArrows;
@@ -37,6 +40,7 @@ namespace Figuras3D_Proyecto
             gunacmbFigures.TabStop = false;
             gunacmbMode.TabStop = false;
 
+            CreateMaterialButton();
 
 
             gunacmbFigures.SelectedIndexChanged += GunacmbFigures_SelectedIndexChanged;
@@ -68,7 +72,19 @@ namespace Figuras3D_Proyecto
             }
         }
 
+        private void CreateMaterialButton()
+        {
+            gunbtnSelectMaterial = new Guna.UI2.WinForms.Guna2Button();
+            gunbtnSelectMaterial.Size = new Size(36, 36);
+            gunbtnSelectMaterial.Text = "M"; // o "" si usas ícono
+            gunbtnSelectMaterial.Visible = false;
 
+            // Ubícalo cerca del botón de color (ajusta coordenadas)
+            gunbtnSelectMaterial.Location = new Point(gunbtnSelectColor.Right + 8, gunbtnSelectColor.Top);
+
+            gunbtnSelectMaterial.Click += gunbtnSelectMaterial_Click;
+            Controls.Add(gunbtnSelectMaterial);
+        }
 
 
         private void PanelCanvas_Paint(object sender, PaintEventArgs e)
@@ -84,6 +100,7 @@ namespace Figuras3D_Proyecto
             gunarbtnChangeMaterial.Visible = false;
             gunarbtnChangeLighting.Visible = false;
             gunarbtnPaintFigures.Visible = false;
+
  
             gunacmbMode.SelectedIndex = 0;
             gunbtnSelectColor.Visible = false;
@@ -201,8 +218,27 @@ namespace Figuras3D_Proyecto
 
         private void gunarbtnPaintFigures_CheckedChanged(object sender, EventArgs e)
         {
-            gunbtnSelectColor.Visible = gunarbtnPaintFigures.Checked;
+            if (!gunarbtnPaintFigures.Checked) return;
+
+            HideAllSelectors();
+            gunbtnSelectColor.Visible = true;
+
         }
+
+        private void gunarbtnChangeLight_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!gunarbtnChangeLighting.Checked) return;
+
+            HideAllSelectors();
+            gunbtnSelectLight.Visible = true;
+        }
+
+
+
+
+
+
+
 
         private void gunbtnSelectColor_Click(object sender, EventArgs e)
         {
@@ -227,16 +263,14 @@ namespace Figuras3D_Proyecto
         {
             if (!gunarbtnChangeMaterial.Checked)
                 return;
+            HideAllSelectors();
+            gunbtnSelectMaterial.Visible = true;
 
             var selected = sceneManager.Shapes.FirstOrDefault(s => s.IsSelected);
             if (selected == null) return;
 
             // Cicla materiales
-            if (selected.Material == MaterialType.Solid)
-            {
-                selected.Material = MaterialType.Rough;
-            }
-            else if (selected.Material == MaterialType.Rough)
+            if (selected.Material == MaterialType.Rough)
             {
                 selected.Material = MaterialType.Striped;
             }
@@ -253,7 +287,29 @@ namespace Figuras3D_Proyecto
             picCanvas.Invalidate();
         }
 
+        private void gunbtnSelectMaterial_Click(object sender, EventArgs e)
+        {
+            var matForm = new MaterialPickerForm(currentMaterial);
+            var buttonLocation = gunbtnSelectMaterial.PointToScreen(Point.Empty);
+            matForm.Location = new Point(buttonLocation.X, buttonLocation.Y + gunbtnSelectMaterial.Height);
 
+            if (matForm.ShowDialog() == DialogResult.OK)
+            {
+                currentMaterial = matForm.SelectedMaterial;
+
+                // opcional: actualizar texto del botón
+                gunbtnSelectMaterial.Text = currentMaterial.ToString().Substring(0, 1);
+
+                mouseClickHandler.UpdateMaterial(currentMaterial);
+                picCanvas.Invalidate();
+            }
+        }
+        private void HideAllSelectors()
+        {
+            gunbtnSelectColor.Visible = false;
+            gunbtnSelectMaterial.Visible = false;
+            gunbtnSelectLight.Visible = false;
+        }
 
     }
 }

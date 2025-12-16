@@ -11,12 +11,21 @@ namespace Figuras3D_Proyecto.Services
     {
         public List<Shape3D> Shapes { get; private set; } = new List<Shape3D>();
 
-        public int? SelectedVertexIndex = null;                    
-        public Tuple<int, int> SelectedEdge = null;                
+        public int? SelectedVertexIndex = null;
+        public Tuple<int, int> SelectedEdge = null;
         public List<int> SelectedFace = null;
         private int totalShapesInserted = 1;
         public int? SelectedShapeIndex = null;  // <- para saber de qué figura es el vértice seleccionado
 
+        // ------------------ NUEVO: Sombrado simple (estable) ------------------
+        public bool LightingEnabled { get; set; } = true;
+
+        // Qué tan oscuras quedan las caras "en sombra" (0.35..0.70 recomendado)
+        public float ShadowFactor { get; set; } = 0.55f;
+
+        // Qué tan claras quedan las caras "iluminadas" (1.05..1.40 recomendado)
+        public float LightFactor { get; set; } = 1.25f;
+        // --------------------------------------------------------------------
 
         public void Initialize()
         {
@@ -43,12 +52,8 @@ namespace Figuras3D_Proyecto.Services
             shape.ApplyTransformations();
 
             Shapes.Add(shape);
-            totalShapesInserted++; 
+            totalShapesInserted++;
         }
-
-
-
-
 
         public void ResetSelectedShape()
         {
@@ -66,6 +71,5 @@ namespace Figuras3D_Proyecto.Services
                 selected.TraslateZ = 0;
             }
         }
-
     }
 }

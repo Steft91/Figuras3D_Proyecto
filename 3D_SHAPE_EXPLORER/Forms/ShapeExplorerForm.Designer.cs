@@ -93,11 +93,11 @@
             this.gunarbtnVertexes.CheckedState.FillColor = System.Drawing.Color.DimGray;
             this.gunarbtnVertexes.CheckedState.InnerColor = System.Drawing.Color.White;
             this.gunarbtnVertexes.CheckedState.InnerOffset = -4;
-            this.gunarbtnVertexes.Font = new System.Drawing.Font("Stork Delivery", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gunarbtnVertexes.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gunarbtnVertexes.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.gunarbtnVertexes.Location = new System.Drawing.Point(17, 117);
             this.gunarbtnVertexes.Name = "gunarbtnVertexes";
-            this.gunarbtnVertexes.Size = new System.Drawing.Size(130, 30);
+            this.gunarbtnVertexes.Size = new System.Drawing.Size(139, 26);
             this.gunarbtnVertexes.TabIndex = 14;
             this.gunarbtnVertexes.Text = "🟢 Vertexes";
             this.gunarbtnVertexes.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
@@ -115,11 +115,11 @@
             this.gunarbtnPaintFigures.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.gunarbtnPaintFigures.CheckedState.InnerColor = System.Drawing.Color.White;
             this.gunarbtnPaintFigures.CheckedState.InnerOffset = -4;
-            this.gunarbtnPaintFigures.Font = new System.Drawing.Font("Stork Delivery", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gunarbtnPaintFigures.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gunarbtnPaintFigures.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.gunarbtnPaintFigures.Location = new System.Drawing.Point(17, 162);
             this.gunarbtnPaintFigures.Name = "gunarbtnPaintFigures";
-            this.gunarbtnPaintFigures.Size = new System.Drawing.Size(153, 30);
+            this.gunarbtnPaintFigures.Size = new System.Drawing.Size(173, 26);
             this.gunarbtnPaintFigures.TabIndex = 17;
             this.gunarbtnPaintFigures.Text = "🎨Paint Figures";
             this.gunarbtnPaintFigures.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
@@ -139,15 +139,15 @@
             this.gunbtnSelectColor.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.gunbtnSelectColor.FillColor = System.Drawing.Color.Transparent;
             this.gunbtnSelectColor.FocusedColor = System.Drawing.Color.White;
-            this.gunbtnSelectColor.Font = new System.Drawing.Font("Stork Delivery", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gunbtnSelectColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gunbtnSelectColor.ForeColor = System.Drawing.Color.Black;
             this.gunbtnSelectColor.HoverState.BorderColor = System.Drawing.Color.White;
             this.gunbtnSelectColor.HoverState.CustomBorderColor = System.Drawing.Color.White;
             this.gunbtnSelectColor.HoverState.FillColor = System.Drawing.Color.Transparent;
             this.gunbtnSelectColor.IndicateFocus = true;
-            this.gunbtnSelectColor.Location = new System.Drawing.Point(30, 523);
+            this.gunbtnSelectColor.Location = new System.Drawing.Point(17, 471);
             this.gunbtnSelectColor.Name = "gunbtnSelectColor";
-            this.gunbtnSelectColor.Size = new System.Drawing.Size(298, 32);
+            this.gunbtnSelectColor.Size = new System.Drawing.Size(323, 32);
             this.gunbtnSelectColor.TabIndex = 18;
             this.gunbtnSelectColor.Text = "🌈Seleccionar Color";
             this.gunbtnSelectColor.Click += new System.EventHandler(this.gunbtnSelectColor_Click);
@@ -178,11 +178,11 @@
             this.gunarbtnChangeMaterial.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.gunarbtnChangeMaterial.CheckedState.InnerColor = System.Drawing.Color.White;
             this.gunarbtnChangeMaterial.CheckedState.InnerOffset = -4;
-            this.gunarbtnChangeMaterial.Font = new System.Drawing.Font("Stork Delivery", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gunarbtnChangeMaterial.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gunarbtnChangeMaterial.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.gunarbtnChangeMaterial.Location = new System.Drawing.Point(207, 114);
             this.gunarbtnChangeMaterial.Name = "gunarbtnChangeMaterial";
-            this.gunarbtnChangeMaterial.Size = new System.Drawing.Size(171, 30);
+            this.gunarbtnChangeMaterial.Size = new System.Drawing.Size(200, 26);
             this.gunarbtnChangeMaterial.TabIndex = 19;
             this.gunarbtnChangeMaterial.Text = "📏Change Material";
             this.gunarbtnChangeMaterial.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
@@ -190,6 +190,7 @@
             this.gunarbtnChangeMaterial.UncheckedState.FillColor = System.Drawing.Color.Transparent;
             this.gunarbtnChangeMaterial.UncheckedState.InnerColor = System.Drawing.Color.Transparent;
             this.gunarbtnChangeMaterial.UseVisualStyleBackColor = false;
+            this.gunarbtnChangeMaterial.CheckedChanged += new System.EventHandler(this.gunarbtnChangeMaterial_CheckedChanged);
             // 
             // gunarbtnChangeLighting
             // 
@@ -200,11 +201,11 @@
             this.gunarbtnChangeLighting.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.gunarbtnChangeLighting.CheckedState.InnerColor = System.Drawing.Color.White;
             this.gunarbtnChangeLighting.CheckedState.InnerOffset = -4;
-            this.gunarbtnChangeLighting.Font = new System.Drawing.Font("Stork Delivery", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gunarbtnChangeLighting.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gunarbtnChangeLighting.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.gunarbtnChangeLighting.Location = new System.Drawing.Point(207, 162);
             this.gunarbtnChangeLighting.Name = "gunarbtnChangeLighting";
-            this.gunarbtnChangeLighting.Size = new System.Drawing.Size(162, 30);
+            this.gunarbtnChangeLighting.Size = new System.Drawing.Size(194, 26);
             this.gunarbtnChangeLighting.TabIndex = 20;
             this.gunarbtnChangeLighting.Text = "🧊ChangeLighting";
             this.gunarbtnChangeLighting.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
@@ -212,14 +213,15 @@
             this.gunarbtnChangeLighting.UncheckedState.FillColor = System.Drawing.Color.Transparent;
             this.gunarbtnChangeLighting.UncheckedState.InnerColor = System.Drawing.Color.Transparent;
             this.gunarbtnChangeLighting.UseVisualStyleBackColor = false;
+            this.gunarbtnChangeLighting.CheckedChanged += new System.EventHandler(this.gunarbtnChangeLight_CheckedChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Stork Delivery", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(102, 216);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(154, 285);
+            this.label1.Size = new System.Drawing.Size(183, 240);
             this.label1.TabIndex = 21;
             this.label1.Text = resources.GetString("label1.Text");
             // 
@@ -233,17 +235,18 @@
             this.gunbtnSelectMaterial.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.gunbtnSelectMaterial.FillColor = System.Drawing.Color.Transparent;
             this.gunbtnSelectMaterial.FocusedColor = System.Drawing.Color.White;
-            this.gunbtnSelectMaterial.Font = new System.Drawing.Font("Stork Delivery", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gunbtnSelectMaterial.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gunbtnSelectMaterial.ForeColor = System.Drawing.Color.Black;
             this.gunbtnSelectMaterial.HoverState.BorderColor = System.Drawing.Color.White;
             this.gunbtnSelectMaterial.HoverState.CustomBorderColor = System.Drawing.Color.White;
             this.gunbtnSelectMaterial.HoverState.FillColor = System.Drawing.Color.Transparent;
             this.gunbtnSelectMaterial.IndicateFocus = true;
-            this.gunbtnSelectMaterial.Location = new System.Drawing.Point(30, 561);
+            this.gunbtnSelectMaterial.Location = new System.Drawing.Point(17, 509);
             this.gunbtnSelectMaterial.Name = "gunbtnSelectMaterial";
-            this.gunbtnSelectMaterial.Size = new System.Drawing.Size(298, 32);
+            this.gunbtnSelectMaterial.Size = new System.Drawing.Size(323, 32);
             this.gunbtnSelectMaterial.TabIndex = 22;
             this.gunbtnSelectMaterial.Text = "🌈Seleccionar Material";
+            this.gunbtnSelectMaterial.Click += new System.EventHandler(this.gunbtnSelectMaterial_Click);
             // 
             // gunbtnSelectLight
             // 
@@ -255,15 +258,15 @@
             this.gunbtnSelectLight.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.gunbtnSelectLight.FillColor = System.Drawing.Color.Transparent;
             this.gunbtnSelectLight.FocusedColor = System.Drawing.Color.White;
-            this.gunbtnSelectLight.Font = new System.Drawing.Font("Stork Delivery", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gunbtnSelectLight.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gunbtnSelectLight.ForeColor = System.Drawing.Color.Black;
             this.gunbtnSelectLight.HoverState.BorderColor = System.Drawing.Color.White;
             this.gunbtnSelectLight.HoverState.CustomBorderColor = System.Drawing.Color.White;
             this.gunbtnSelectLight.HoverState.FillColor = System.Drawing.Color.Transparent;
             this.gunbtnSelectLight.IndicateFocus = true;
-            this.gunbtnSelectLight.Location = new System.Drawing.Point(30, 599);
+            this.gunbtnSelectLight.Location = new System.Drawing.Point(17, 547);
             this.gunbtnSelectLight.Name = "gunbtnSelectLight";
-            this.gunbtnSelectLight.Size = new System.Drawing.Size(298, 32);
+            this.gunbtnSelectLight.Size = new System.Drawing.Size(323, 32);
             this.gunbtnSelectLight.TabIndex = 23;
             this.gunbtnSelectLight.Text = "🌈Seleccionar Iluminacion";
             // 
