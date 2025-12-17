@@ -41,6 +41,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.gunbtnSelectMaterial = new Guna.UI2.WinForms.Guna2Button();
             this.gunbtnSelectLight = new Guna.UI2.WinForms.Guna2Button();
+            this.gunabtnCamaraOrbital = new Guna.UI2.WinForms.Guna2Button();
+            this.gunabtnCamaraFrontal = new Guna.UI2.WinForms.Guna2Button();
+            this.gunabtnCamaraLibre = new Guna.UI2.WinForms.Guna2Button();
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -157,10 +160,13 @@
             this.picCanvas.BackColor = System.Drawing.SystemColors.Info;
             this.picCanvas.Location = new System.Drawing.Point(413, 26);
             this.picCanvas.Name = "picCanvas";
-            this.picCanvas.Size = new System.Drawing.Size(604, 605);
+            this.picCanvas.Size = new System.Drawing.Size(1151, 724);
             this.picCanvas.TabIndex = 0;
             this.picCanvas.TabStop = false;
             this.picCanvas.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picCanvas_MouseClick);
+            this.picCanvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picCanvas_MouseDown);
+            this.picCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picCanvas_MouseMove);
+            this.picCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picCanvas_MouseUp);
             // 
             // lblControls
             // 
@@ -270,12 +276,84 @@
             this.gunbtnSelectLight.TabIndex = 23;
             this.gunbtnSelectLight.Text = "🌈Seleccionar Iluminacion";
             // 
+            // gunabtnCamaraOrbital
+            // 
+            this.gunabtnCamaraOrbital.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.gunabtnCamaraOrbital.BorderColor = System.Drawing.Color.Transparent;
+            this.gunabtnCamaraOrbital.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.gunabtnCamaraOrbital.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.gunabtnCamaraOrbital.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.gunabtnCamaraOrbital.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.gunabtnCamaraOrbital.FillColor = System.Drawing.Color.Transparent;
+            this.gunabtnCamaraOrbital.FocusedColor = System.Drawing.Color.White;
+            this.gunabtnCamaraOrbital.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gunabtnCamaraOrbital.ForeColor = System.Drawing.Color.Black;
+            this.gunabtnCamaraOrbital.HoverState.BorderColor = System.Drawing.Color.White;
+            this.gunabtnCamaraOrbital.HoverState.CustomBorderColor = System.Drawing.Color.White;
+            this.gunabtnCamaraOrbital.HoverState.FillColor = System.Drawing.Color.Transparent;
+            this.gunabtnCamaraOrbital.IndicateFocus = true;
+            this.gunabtnCamaraOrbital.Location = new System.Drawing.Point(12, 666);
+            this.gunabtnCamaraOrbital.Name = "gunabtnCamaraOrbital";
+            this.gunabtnCamaraOrbital.Size = new System.Drawing.Size(95, 54);
+            this.gunabtnCamaraOrbital.TabIndex = 24;
+            this.gunabtnCamaraOrbital.Text = "🎞️ Cámara Orbital";
+            this.gunabtnCamaraOrbital.Click += new System.EventHandler(this.gunabtnCamaraOrbital_Click);
+            // 
+            // gunabtnCamaraFrontal
+            // 
+            this.gunabtnCamaraFrontal.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.gunabtnCamaraFrontal.BorderColor = System.Drawing.Color.Transparent;
+            this.gunabtnCamaraFrontal.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.gunabtnCamaraFrontal.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.gunabtnCamaraFrontal.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.gunabtnCamaraFrontal.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.gunabtnCamaraFrontal.FillColor = System.Drawing.Color.Transparent;
+            this.gunabtnCamaraFrontal.FocusedColor = System.Drawing.Color.White;
+            this.gunabtnCamaraFrontal.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gunabtnCamaraFrontal.ForeColor = System.Drawing.Color.Black;
+            this.gunabtnCamaraFrontal.HoverState.BorderColor = System.Drawing.Color.White;
+            this.gunabtnCamaraFrontal.HoverState.CustomBorderColor = System.Drawing.Color.White;
+            this.gunabtnCamaraFrontal.HoverState.FillColor = System.Drawing.Color.Transparent;
+            this.gunabtnCamaraFrontal.IndicateFocus = true;
+            this.gunabtnCamaraFrontal.Location = new System.Drawing.Point(141, 666);
+            this.gunabtnCamaraFrontal.Name = "gunabtnCamaraFrontal";
+            this.gunabtnCamaraFrontal.Size = new System.Drawing.Size(95, 54);
+            this.gunabtnCamaraFrontal.TabIndex = 25;
+            this.gunabtnCamaraFrontal.Text = "🎞️ Cámara Frontal";
+            this.gunabtnCamaraFrontal.Click += new System.EventHandler(this.gunabtnCamaraFrontal_Click);
+            // 
+            // gunabtnCamaraLibre
+            // 
+            this.gunabtnCamaraLibre.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.gunabtnCamaraLibre.BorderColor = System.Drawing.Color.Transparent;
+            this.gunabtnCamaraLibre.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.gunabtnCamaraLibre.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.gunabtnCamaraLibre.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.gunabtnCamaraLibre.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.gunabtnCamaraLibre.FillColor = System.Drawing.Color.Transparent;
+            this.gunabtnCamaraLibre.FocusedColor = System.Drawing.Color.White;
+            this.gunabtnCamaraLibre.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gunabtnCamaraLibre.ForeColor = System.Drawing.Color.Black;
+            this.gunabtnCamaraLibre.HoverState.BorderColor = System.Drawing.Color.White;
+            this.gunabtnCamaraLibre.HoverState.CustomBorderColor = System.Drawing.Color.White;
+            this.gunabtnCamaraLibre.HoverState.FillColor = System.Drawing.Color.Transparent;
+            this.gunabtnCamaraLibre.IndicateFocus = true;
+            this.gunabtnCamaraLibre.Location = new System.Drawing.Point(277, 666);
+            this.gunabtnCamaraLibre.Name = "gunabtnCamaraLibre";
+            this.gunabtnCamaraLibre.Size = new System.Drawing.Size(95, 54);
+            this.gunabtnCamaraLibre.TabIndex = 26;
+            this.gunabtnCamaraLibre.Text = "🎞️ Cámara Libre";
+            this.gunabtnCamaraLibre.Click += new System.EventHandler(this.gunabtnCamaraLibre_Click);
+            // 
             // ShapeExplorerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightCyan;
-            this.ClientSize = new System.Drawing.Size(1041, 655);
+            this.ClientSize = new System.Drawing.Size(1576, 779);
+            this.Controls.Add(this.gunabtnCamaraLibre);
+            this.Controls.Add(this.gunabtnCamaraFrontal);
+            this.Controls.Add(this.gunabtnCamaraOrbital);
             this.Controls.Add(this.gunbtnSelectLight);
             this.Controls.Add(this.gunbtnSelectMaterial);
             this.Controls.Add(this.label1);
@@ -290,6 +368,7 @@
             this.Name = "ShapeExplorerForm";
             this.Text = "Figuras 3D ";
             this.Load += new System.EventHandler(this.ShapeExplorerForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ShapeExplorerForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -309,6 +388,9 @@
         private System.Windows.Forms.Label label1;
         private Guna.UI2.WinForms.Guna2Button gunbtnSelectMaterial;
         private Guna.UI2.WinForms.Guna2Button gunbtnSelectLight;
+        private Guna.UI2.WinForms.Guna2Button gunabtnCamaraOrbital;
+        private Guna.UI2.WinForms.Guna2Button gunabtnCamaraFrontal;
+        private Guna.UI2.WinForms.Guna2Button gunabtnCamaraLibre;
     }
 }
 

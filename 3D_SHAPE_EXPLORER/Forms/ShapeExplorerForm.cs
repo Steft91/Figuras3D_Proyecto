@@ -29,10 +29,23 @@ namespace Figuras3D_Proyecto
         private ContextMenuStrip colorMenu;
         private MouseClickHandler mouseClickHandler;
 
+        // -------------------- NUEVO: control cámara (orbital) --------------------
+        private bool _camDragging = false;
+        private bool _camPanMode = false; // botón derecho
+        private Point _camLastMouse;
+
+        // Para evitar que la cámara se mueva cuando estás editando vértices/caras/material
+        private bool IsEditMode =>
+            gunarbtnVertexes.Checked || gunarbtnChangeMaterial.Checked || gunarbtnChangeLighting.Checked || gunarbtnPaintFigures.Checked;
+        // ------------------------------------------------------------------------
+
         public ShapeExplorerForm()
         {
             InitializeComponent();
             HideAllSelectors();
+
+            // Teclas: que el Form capture keys incluso si el foco está en otros controles
+            //
 
             gunacmbFigures.KeyDown += ComboBox_BlockArrows;
             gunacmbMode.KeyDown += ComboBox_BlockArrows;
@@ -49,13 +62,27 @@ namespace Figuras3D_Proyecto
             SetupComboBoxFigures();
             SetupComboBoxMode();
 
-            sceneManager.Initialize();
+            sceneManager.Camera.SetOrbitalDefault();
+
             inputController = new KeyboardController(this, picCanvas, sceneManager);
 
             picCanvas.Paint += PanelCanvas_Paint;
             mouseClickHandler = new MouseClickHandler(sceneManager, picCanvas,
                             gunarbtnVertexes, gunarbtnChangeLighting, gunarbtnChangeMaterial, gunarbtnPaintFigures, currentPaintColor);
+
+            // Click edición (selección de vértices/caras/material/pintura)
             picCanvas.MouseClick += picCanvas_MouseClick;
+
+            // ----------------- NUEVO: eventos cámara -----------------
+            picCanvas.MouseDown += picCanvas_MouseDown;
+            picCanvas.MouseUp += picCanvas_MouseUp;
+            picCanvas.MouseMove += picCanvas_MouseMove;
+            picCanvas.MouseWheel += picCanvas_MouseWheel;
+
+            // Importante para wheel
+            picCanvas.TabStop = true;
+            // ---------------------------------------------------------
+
             this.Load += ShapeExplorerForm_Load;
 
         }
@@ -263,26 +290,21 @@ namespace Figuras3D_Proyecto
         {
             if (!gunarbtnChangeMaterial.Checked)
                 return;
+
             HideAllSelectors();
             gunbtnSelectMaterial.Visible = true;
 
+            // IMPORTANTE: si ya estás usando picker, el “ciclado” acá puede molestarte.
+            // Si quieres, coméntalo. Lo dejo tal cual tu versión actual.
             var selected = sceneManager.Shapes.FirstOrDefault(s => s.IsSelected);
             if (selected == null) return;
 
-            // Cicla materiales
             if (selected.Material == MaterialType.Rough)
-            {
                 selected.Material = MaterialType.Striped;
-            }
             else if (selected.Material == MaterialType.Striped)
-            {
                 selected.Material = MaterialType.Smooth;
-            }
             else
-            {
                 selected.Material = MaterialType.Solid;
-            }
-
 
             picCanvas.Invalidate();
         }
@@ -311,5 +333,100 @@ namespace Figuras3D_Proyecto
             gunbtnSelectLight.Visible = false;
         }
 
+        private void picCanvas_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Si estás editando, no arrancar cámara
+            if (IsEditMode) return;
+
+            // Solo si existe la cámara (si no, ignora)
+            if (sceneManager.Camera == null) return;
+
+            _camDragging = true;
+            _camLastMouse = e.Location;
+            _camPanMode = (e.Button == MouseButtons.Right);
+
+            picCanvas.Focus();
+        }
+
+        private void picCanvas_MouseUp(object sender, MouseEventArgs e)
+        {
+            _camDragging = false;
+        }
+
+        private void picCanvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!_camDragging) return;
+            if (sceneManager.Camera == null) return;
+
+            // Solo aplicamos cámara en modo Orbital (por ahora)
+            if (sceneManager.Camera.Mode != CameraMode.Orbital) return;
+
+            int dx = e.X - _camLastMouse.X;
+            int dy = e.Y - _camLastMouse.Y;
+            _camLastMouse = e.Location;
+
+            if (_camPanMode)
+                sceneManager.Camera.Pan(dx, dy);
+            else
+                sceneManager.Camera.Orbit(dx, dy);
+
+            picCanvas.Invalidate();
+        }
+
+        private void picCanvas_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (sceneManager.Camera == null) return;
+            if (IsEditMode) return;
+
+            sceneManager.Camera.Zoom(e.Delta);
+            picCanvas.Invalidate();
+        }
+
+        private void gunabtnCamaraOrbital_Click(object sender, EventArgs e)
+        {
+            sceneManager.Camera.SetOrbitalDefault();
+            picCanvas.Invalidate();
+        }
+
+        private void gunabtnCamaraFrontal_Click(object sender, EventArgs e)
+        {
+            sceneManager.Camera.SetFixedFront();
+            picCanvas.Invalidate();
+        }
+
+        private void gunabtnCamaraLibre_Click(object sender, EventArgs e)
+        {
+            sceneManager.Camera.SetFreeDefault();
+            picCanvas.Invalidate();
+        }
+
+        private void ShapeExplorerForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (sceneManager.Camera == null) return;
+
+            // En edición no cambiamos cámara con teclas para no interferir
+            if (IsEditMode) return;
+
+            // 1 = fija, 2 = orbital, 3 = libre
+            if (e.KeyCode == Keys.D1 || e.KeyCode == Keys.NumPad1)
+            {
+                sceneManager.Camera.SetFixedFront();
+                picCanvas.Invalidate();
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.D2 || e.KeyCode == Keys.NumPad2)
+            {
+                sceneManager.Camera.SetOrbitalDefault();
+                picCanvas.Invalidate();
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.D3 || e.KeyCode == Keys.NumPad3)
+            {
+                sceneManager.Camera.SetFreeDefault();
+                picCanvas.Invalidate();
+                e.Handled = true;
+            }
+        
+        }
     }
 }

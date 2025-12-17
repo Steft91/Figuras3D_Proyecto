@@ -10,6 +10,7 @@ namespace Figuras3D_Proyecto.Services
     public class SceneManager
     {
         public List<Shape3D> Shapes { get; private set; } = new List<Shape3D>();
+        public Camera3D Camera { get; private set; } = new Camera3D();
 
         public int? SelectedVertexIndex = null;
         public Tuple<int, int> SelectedEdge = null;
@@ -32,6 +33,7 @@ namespace Figuras3D_Proyecto.Services
             var cube = new Cube();
             cube.GenerateShape();
             Shapes.Add(cube);
+            Camera.SetOrbitalDefault();
         }
 
         public void AddShape(Shape3D shape)

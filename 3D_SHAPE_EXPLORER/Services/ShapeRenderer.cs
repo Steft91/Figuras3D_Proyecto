@@ -14,10 +14,18 @@ namespace Figuras3D_Proyecto.Services
             foreach (var shape in shapes)
             {
                 shape.ApplyTransformations();
-                var projectedPoints = shape.Points.Select(p => Projection3D.Project(p, panelSize)).ToList();
+
+                // ✅ CAMBIO: proyectar usando cámara
+                var cam = (sceneManager != null) ? sceneManager.Camera : null;
+                List<PointF> projectedPoints;
+
+                if (cam != null)
+                    projectedPoints = shape.Points.Select(p => Projection3D.Project(p, panelSize, cam)).ToList();
+                else
+                    projectedPoints = shape.Points.Select(p => Projection3D.Project(p, panelSize)).ToList();
 
                 DrawCenter(g, projectedPoints);
-                DrawFaces(g, shape, projectedPoints, sceneManager); // <-- CAMBIO
+                DrawFaces(g, shape, projectedPoints, sceneManager);
                 DrawEdges(g, shape, projectedPoints);
                 DrawSelection(g, shape, sceneManager, projectedPoints);
             }
@@ -30,34 +38,30 @@ namespace Figuras3D_Proyecto.Services
             g.FillEllipse(Brushes.Red, avgX - 3, avgY - 3, 6, 6);
         }
 
-        // <-- CAMBIO: ahora recibe sceneManager
         private void DrawFaces(Graphics g, Shape3D shape, List<PointF> points, SceneManager sceneManager)
         {
             for (int i = 0; i < shape.Faces.Count; i++)
             {
                 var face = shape.Faces[i];
-
-                // CAMBIO: usar la versión con sombreado
                 ShapePainter.DrawFace(g, points, face, shape, sceneManager);
             }
         }
 
         private void DrawEdges(Graphics g, Shape3D shape, List<PointF> points)
         {
-            using (Pen edgePen = shape.IsSelected
-            ? new Pen(Color.Orange, 2)
-            : new Pen(Color.Black, 1))
+            Pen edgePen = shape.IsSelected ? new Pen(Color.Orange, 2) : new Pen(Color.Black, 1);
+
+            foreach (var face in shape.Faces)
             {
-                foreach (var face in shape.Faces)
+                for (int i = 0; i < face.Count; i++)
                 {
-                    for (int i = 0; i < face.Count; i++)
-                    {
-                        int idx1 = face[i];
-                        int idx2 = face[(i + 1) % face.Count];
-                        g.DrawLine(edgePen, points[idx1], points[idx2]);
-                    }
+                    int idx1 = face[i];
+                    int idx2 = face[(i + 1) % face.Count];
+                    g.DrawLine(edgePen, points[idx1], points[idx2]);
                 }
             }
+
+            edgePen.Dispose();
         }
 
         private void DrawSelection(Graphics g, Shape3D shape, SceneManager sceneManager, List<PointF> points)
@@ -78,13 +82,14 @@ namespace Figuras3D_Proyecto.Services
                 sceneManager.SelectedEdge != null &&
                 sceneManager.Shapes.IndexOf(shape) == sceneManager.SelectedShapeIndex.Value)
             {
-                var (a, b) = sceneManager.SelectedEdge;
+                var a = sceneManager.SelectedEdge.Item1;
+                var b = sceneManager.SelectedEdge.Item2;
+
                 if (a < points.Count && b < points.Count)
                 {
-                    using (Pen redPen = new Pen(Color.Red, 2))
-                    {
-                        g.DrawLine(redPen, points[a], points[b]);
-                    }
+                    Pen redPen = new Pen(Color.Red, 2);
+                    g.DrawLine(redPen, points[a], points[b]);
+                    redPen.Dispose();
                 }
             }
 
@@ -94,10 +99,9 @@ namespace Figuras3D_Proyecto.Services
                  IsValidFace(sceneManager.SelectedFace, points.Count))
             {
                 var facePoints = sceneManager.SelectedFace.Select(i => points[i]).ToArray();
-                using (Pen purplePen = new Pen(Color.Purple, 2))
-                {
-                    g.DrawPolygon(purplePen, facePoints);
-                }
+                Pen purplePen = new Pen(Color.Purple, 2);
+                g.DrawPolygon(purplePen, facePoints);
+                purplePen.Dispose();
             }
         }
 

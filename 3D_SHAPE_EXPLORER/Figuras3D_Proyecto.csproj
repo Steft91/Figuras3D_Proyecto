@@ -64,6 +64,7 @@
     <Compile Include="Forms\MaterialPickerForm.Designer.cs">
       <DependentUpon>MaterialPickerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Camera3D.cs" />
     <Compile Include="Models\Sphere.cs" />
     <Compile Include="Services\MouseClickHandler.cs" />
     <Compile Include="Services\SceneManager.cs" />
