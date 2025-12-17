@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShapeExplorerForm));
             this.gunacmbFigures = new Guna.UI2.WinForms.Guna2ComboBox();
             this.gunacmbMode = new Guna.UI2.WinForms.Guna2ComboBox();
@@ -44,6 +45,7 @@
             this.gunabtnCamaraOrbital = new Guna.UI2.WinForms.Guna2Button();
             this.gunabtnCamaraFrontal = new Guna.UI2.WinForms.Guna2Button();
             this.gunabtnCamaraLibre = new Guna.UI2.WinForms.Guna2Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -345,6 +347,10 @@
             this.gunabtnCamaraLibre.Text = "🎞️ Cámara Libre";
             this.gunabtnCamaraLibre.Click += new System.EventHandler(this.gunabtnCamaraLibre_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // ShapeExplorerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -369,6 +375,7 @@
             this.Text = "Figuras 3D ";
             this.Load += new System.EventHandler(this.ShapeExplorerForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ShapeExplorerForm_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ShapeExplorerForm_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -391,6 +398,7 @@
         private Guna.UI2.WinForms.Guna2Button gunabtnCamaraOrbital;
         private Guna.UI2.WinForms.Guna2Button gunabtnCamaraFrontal;
         private Guna.UI2.WinForms.Guna2Button gunabtnCamaraLibre;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

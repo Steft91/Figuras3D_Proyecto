@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Figuras3D_Proyecto.Models.Shape3D;
+using System.Diagnostics;
 
 namespace Figuras3D_Proyecto
 {
@@ -38,7 +39,11 @@ namespace Figuras3D_Proyecto
         private bool IsEditMode =>
             gunarbtnVertexes.Checked || gunarbtnChangeMaterial.Checked || gunarbtnChangeLighting.Checked || gunarbtnPaintFigures.Checked;
         // ------------------------------------------------------------------------
+        private Timer _freeCamTimer;
+        private bool _kI, _kJ, _kK, _kL, _kU, _kO, _kShift;
 
+        private const float FreeCamBaseSpeed = 18f;     // ajusta a gusto
+        private const float FreeCamFastMult = 3.0f;     // Shift
         public ShapeExplorerForm()
         {
             InitializeComponent();
@@ -82,6 +87,13 @@ namespace Figuras3D_Proyecto
             // Importante para wheel
             picCanvas.TabStop = true;
             // ---------------------------------------------------------
+            this.KeyUp += ShapeExplorerForm_KeyUp;
+
+            // Timer para movimiento continuo en cámara libre
+            _freeCamTimer = new Timer();
+            _freeCamTimer.Interval = 16; // ~60 FPS
+            _freeCamTimer.Tick += timer1_Tick;
+            _freeCamTimer.Start();
 
             this.Load += ShapeExplorerForm_Load;
 
@@ -353,6 +365,69 @@ namespace Figuras3D_Proyecto
             _camDragging = false;
         }
 
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (sceneManager.Camera == null) return;
+            if (IsEditMode) return;
+
+            var cam = sceneManager.Camera;
+            if (cam.Mode != CameraMode.Free) return;
+
+            // Si no hay ninguna tecla apretada, no hacer nada
+            if (!(_kI || _kK || _kJ || _kL || _kU || _kO)) return;
+
+            float speed = FreeCamBaseSpeed * (_kShift ? FreeCamFastMult : 1f);
+
+            // Vectores de movimiento en base a yaw/pitch
+            // forward (dirección a la que mira)
+            float cy = (float)Math.Cos(cam.Yaw);
+            float sy = (float)Math.Sin(cam.Yaw);
+            float cp = (float)Math.Cos(cam.Pitch);
+            float sp = (float)Math.Sin(cam.Pitch);
+
+            // Forward en tu sistema (coherente con Projection3D)
+            var forward = new Point3D(cp * sy, sp, cp * cy);
+
+            // Right = forward x up (up = 0,1,0)
+            var right = new Point3D(forward.Z, 0, -forward.X);
+
+            // Normalizar right (por si acaso)
+            float rlen = (float)Math.Sqrt(right.X * right.X + right.Z * right.Z);
+            if (rlen > 1e-6f)
+            {
+                right = new Point3D(right.X / rlen, 0, right.Z / rlen);
+            }
+
+            float dx = 0, dy = 0, dz = 0;
+
+            if (_kI) { dx += forward.X * speed; dy += forward.Y * speed; dz += forward.Z * speed; }
+            if (_kK) { dx -= forward.X * speed; dy -= forward.Y * speed; dz -= forward.Z * speed; }
+
+            if (_kL) { dx += right.X * speed; dz += right.Z * speed; }
+            if (_kJ) { dx -= right.X * speed; dz -= right.Z * speed; }
+
+            if (_kU) { dy += speed; }
+            if (_kO) { dy -= speed; }
+
+            // Mover cámara: Position y Target juntos (cámara "libre" desplazándose)
+            cam.Position = new Point3D(cam.Position.X + dx, cam.Position.Y + dy, cam.Position.Z + dz);
+            cam.Target = new Point3D(cam.Target.X + dx, cam.Target.Y + dy, cam.Target.Z + dz);
+
+            picCanvas.Invalidate();
+        }
+
+        private void ShapeExplorerForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ShiftKey) _kShift = false;
+
+            if (e.KeyCode == Keys.I) _kI = false;
+            if (e.KeyCode == Keys.K) _kK = false;
+            if (e.KeyCode == Keys.J) _kJ = false;
+            if (e.KeyCode == Keys.L) _kL = false;
+            if (e.KeyCode == Keys.U) _kU = false;
+            if (e.KeyCode == Keys.O) _kO = false;
+        }
+
         private void picCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             if (!_camDragging) return;
@@ -426,7 +501,47 @@ namespace Figuras3D_Proyecto
                 picCanvas.Invalidate();
                 e.Handled = true;
             }
-        
+            if (sceneManager.Camera == null) return;
+
+            // En edición no movemos cámara
+            if (IsEditMode) return;
+
+            // 1 = fija, 2 = orbital, 3 = libre
+            if (e.KeyCode == Keys.D1 || e.KeyCode == Keys.NumPad1)
+            {
+                sceneManager.Camera.SetFixedFront();
+                picCanvas.Invalidate();
+                e.Handled = true;
+                return;
+            }
+            if (e.KeyCode == Keys.D2 || e.KeyCode == Keys.NumPad2)
+            {
+                sceneManager.Camera.SetOrbitalDefault();
+                picCanvas.Invalidate();
+                e.Handled = true;
+                return;
+            }
+            if (e.KeyCode == Keys.D3 || e.KeyCode == Keys.NumPad3)
+            {
+                sceneManager.Camera.SetFreeDefault();
+                picCanvas.Invalidate();
+                e.Handled = true;
+                return;
+            }
+
+            // -------- Free camera keys --------
+            if (e.KeyCode == Keys.ShiftKey) _kShift = true;
+
+            // Solo guardar estado si estás en Free
+            if (sceneManager.Camera.Mode != CameraMode.Free) return;
+
+            if (e.KeyCode == Keys.I) _kI = true;
+            if (e.KeyCode == Keys.K) _kK = true;
+            if (e.KeyCode == Keys.J) _kJ = true;
+            if (e.KeyCode == Keys.L) _kL = true;
+            if (e.KeyCode == Keys.U) _kU = true;
+            if (e.KeyCode == Keys.O) _kO = true;
+
         }
     }
 }
