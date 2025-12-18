@@ -47,7 +47,8 @@ namespace Figuras3D_Proyecto.Forms
             // Estética coherente con ShapeExplorerForm
             this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             this.Size = new Size(380, 260);
-            this.StartPosition = FormStartPosition.Manual;
+            // Aseguramos que por defecto se centre respecto al padre
+            this.StartPosition = FormStartPosition.CenterParent;
             this.Text = "Seleccionar Iluminación";
             this.MaximizeBox = false;
             this.MinimizeBox = false;

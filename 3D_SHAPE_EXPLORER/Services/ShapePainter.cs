@@ -55,43 +55,59 @@ namespace Figuras3D_Proyecto.Services
                 k = lit ? scene.LightFactor : scene.ShadowFactor;
             }
 
+            // Aplicar factor base de iluminación
             Color shaded = MultiplyColor(baseColor, k);
-            // ---------------------------------------------------------------------
 
+            // ---------------- Material-specific adjustments ----------------
             Brush brush;
 
             switch (shape.Material)
             {
                 case MaterialType.Rough:
+                    // Hachurado fuerte para que se note aún si cambia iluminación
                     brush = new System.Drawing.Drawing2D.HatchBrush(
                         System.Drawing.Drawing2D.HatchStyle.DottedGrid,
-                        shaded,
-                        MultiplyColor(Color.DarkGray, Clamp(k, 0.40f, 1.10f)));
+                        MultiplyColor(shaded, 0.95f),
+                        MultiplyColor(Color.FromArgb(200, Color.DarkGray), 1.0f));
                     break;
 
                 case MaterialType.Striped:
                     brush = new System.Drawing.Drawing2D.HatchBrush(
                         System.Drawing.Drawing2D.HatchStyle.DiagonalCross,
-                        shaded,
-                        MultiplyColor(Color.Black, Clamp(k, 0.40f, 1.10f)));
+                        MultiplyColor(shaded, 0.98f),
+                        MultiplyColor(Color.FromArgb(160, Color.Black), 1.0f));
                     break;
 
                 case MaterialType.Smooth:
-                    // gradiente suave para que se note más el “brillo”
+                    // Gradiente más contrastado para "liso" (brillo suave)
                     {
                         GetBounds(polygon, out float minX, out float maxX, out float minY, out float maxY);
                         PointF p1 = new PointF(maxX, minY); // arriba-derecha
                         PointF p2 = new PointF(minX, maxY); // abajo-izquierda
 
-                        Color light = MultiplyColor(shaded, 1.12f);
-                        Color dark = MultiplyColor(shaded, 0.92f);
+                        Color light = MultiplyColor(shaded, 1.18f);
+                        Color dark = MultiplyColor(shaded, 0.88f);
+
+                        brush = new System.Drawing.Drawing2D.LinearGradientBrush(p1, p2, light, dark);
+                    }
+                    break;
+
+                case MaterialType.VeryShiny:
+                    // Base con gradiente marcado (muy reflectante) y se añadirá después un "specular" pintado encima
+                    {
+                        GetBounds(polygon, out float minX, out float maxX, out float minY, out float maxY);
+                        PointF p1 = new PointF(maxX, minY);
+                        PointF p2 = new PointF(minX, maxY);
+
+                        Color light = MultiplyColor(shaded, 1.28f);
+                        Color dark = MultiplyColor(shaded, 0.80f);
 
                         brush = new System.Drawing.Drawing2D.LinearGradientBrush(p1, p2, light, dark);
                     }
                     break;
 
                 default:
-                    // sólido también con gradiente leve (se ve más 3D)
+                    // sólido con gradiente leve
                     {
                         GetBounds(polygon, out float minX, out float maxX, out float minY, out float maxY);
                         PointF p1 = new PointF(maxX, minY); // arriba-derecha
@@ -105,7 +121,38 @@ namespace Figuras3D_Proyecto.Services
                     break;
             }
 
+            // Dibujar cara
             g.FillPolygon(brush, polygon);
+
+            // Si el material es VeryShiny, añadir un brillo especular pintado encima (persistente)
+            if (shape.Material == MaterialType.VeryShiny)
+            {
+                // El specular lo hacemos como un óvalo semitransparente cerca del extremo "iluminado"
+                PointF centroid = Centroid(polygon);
+                float w = Math.Max(20f, (GetPolyWidth(polygon) * 0.35f));
+                float h = Math.Max(12f, (GetPolyHeight(polygon) * 0.25f));
+
+                // Ajustar posición hacia arriba-derecha relativa al centroid para simular luz
+                RectangleF specRect = new RectangleF(centroid.X - w * 0.6f, centroid.Y - h * 1.2f, w, h);
+                using (var specBrush = new SolidBrush(Color.FromArgb(180, Color.White)))
+                {
+                    g.FillEllipse(specBrush, specRect);
+                }
+            }
+
+            // Pequeño overlay para smooth para dar sensación de brillo (más sutil)
+            if (shape.Material == MaterialType.Smooth)
+            {
+                PointF centroid = Centroid(polygon);
+                float w = Math.Max(14f, (GetPolyWidth(polygon) * 0.22f));
+                float h = Math.Max(8f, (GetPolyHeight(polygon) * 0.16f));
+                RectangleF overlay = new RectangleF(centroid.X - w * 0.6f, centroid.Y - h * 1.0f, w, h);
+                using (var overlayBrush = new SolidBrush(Color.FromArgb(120, Color.White)))
+                {
+                    g.FillEllipse(overlayBrush, overlay);
+                }
+            }
+
             brush.Dispose();
         }
 
@@ -167,6 +214,20 @@ namespace Figuras3D_Proyecto.Services
                 y += pts[i].Y;
             }
             return new PointF(x / pts.Length, y / pts.Length);
+        }
+
+        private static float GetPolyWidth(PointF[] pts)
+        {
+            float minX = pts.Min(p => p.X);
+            float maxX = pts.Max(p => p.X);
+            return maxX - minX;
+        }
+
+        private static float GetPolyHeight(PointF[] pts)
+        {
+            float minY = pts.Min(p => p.Y);
+            float maxY = pts.Max(p => p.Y);
+            return maxY - minY;
         }
 
         private static void GetBounds(PointF[] pts, out float minX, out float maxX, out float minY, out float maxY)

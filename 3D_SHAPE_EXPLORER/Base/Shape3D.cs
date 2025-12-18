@@ -65,9 +65,6 @@ namespace Figuras3D_Proyecto.Models
             Traslate(TraslateX, TraslateY, TraslateZ);
         }
 
-
-
-
         public void ApplyScale(float factor)
         {
             foreach (var p in Points)
@@ -121,7 +118,8 @@ namespace Figuras3D_Proyecto.Models
             Solid,
             Rough,
             Striped,
-            Smooth
+            Smooth,
+            VeryShiny
         }
 
         public MaterialType Material { get; set; } = MaterialType.Solid;
