@@ -97,6 +97,8 @@ namespace Figuras3D_Proyecto
 
             this.Load += ShapeExplorerForm_Load;
 
+            // Suscribir el clic del botón de iluminación (lógica añadida)
+            this.gunbtnSelectLight.Click += gunbtnSelectLight_Click;
         }
 
         private void ComboBox_BlockArrows(object sender, KeyEventArgs e)
@@ -156,10 +158,15 @@ namespace Figuras3D_Proyecto
                 gunbtnSelectColor.BorderThickness = 0;           // Opcional: sin bordes
             }
 
+            // Actualizar texto inicial del botón de luz para reflejar estado actual
+            UpdateLightButtonText();
         }
 
-
-
+        private void UpdateLightButtonText()
+        {
+            gunbtnSelectLight.Text = sceneManager.LightingEnabled ? $"💡 Iluminación (On) L:{sceneManager.LightFactor:0.00} S:{sceneManager.ShadowFactor:0.00}" 
+                                                                   : $"💡 Iluminación (Off) L:{sceneManager.LightFactor:0.00} S:{sceneManager.ShadowFactor:0.00}";
+        }
 
         private void picCanvas_MouseClick(object sender, MouseEventArgs e)
         {
@@ -272,13 +279,6 @@ namespace Figuras3D_Proyecto
             gunbtnSelectLight.Visible = true;
         }
 
-
-
-
-
-
-
-
         private void gunbtnSelectColor_Click(object sender, EventArgs e)
         {
             var colores = new List<Color> { Color.Black, Color.White, Color.Orange, Color.Gold, Color.Green, Color.Teal,
@@ -338,6 +338,28 @@ namespace Figuras3D_Proyecto
                 picCanvas.Invalidate();
             }
         }
+
+        // NUEVO: manejador del botón de seleccionar iluminación
+        private void gunbtnSelectLight_Click(object sender, EventArgs e)
+        {
+            var lp = new Forms.LightPickerForm(sceneManager.LightingEnabled, sceneManager.ShadowFactor, sceneManager.LightFactor);
+            var buttonLocation = gunbtnSelectLight.PointToScreen(Point.Empty);
+            lp.StartPosition = FormStartPosition.Manual;
+            lp.Location = new Point(buttonLocation.X, buttonLocation.Y + gunbtnSelectLight.Height);
+
+            if (lp.ShowDialog() == DialogResult.OK)
+            {
+                // Aplicar cambios al SceneManager
+                sceneManager.LightingEnabled = lp.LightingEnabled;
+                sceneManager.ShadowFactor = lp.ShadowFactor;
+                sceneManager.LightFactor = lp.LightFactor;
+
+                UpdateLightButtonText();
+
+                picCanvas.Invalidate();
+            }
+        }
+
         private void HideAllSelectors()
         {
             gunbtnSelectColor.Visible = false;

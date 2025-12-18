@@ -58,6 +58,9 @@
     <Compile Include="Forms\ColorPickerForm.Designer.cs">
       <DependentUpon>ColorPickerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\LightPickerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\MaterialPickerForm.cs">
       <SubType>Form</SubType>
     </Compile>
