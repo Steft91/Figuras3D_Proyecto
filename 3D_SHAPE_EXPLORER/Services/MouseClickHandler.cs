@@ -67,7 +67,7 @@ namespace Figuras3D_Proyecto.Services
                 var shape = sceneManager.Shapes[shapeIndex];
                 Shape3D workingShape = shape.Clone();
                 workingShape.ApplyTransformations();
-                var projected = workingShape.Points.Select(p => Projection3D.Project(p, canvas.Size)).ToList();
+                var projected = workingShape.Points.Select(p => Projection3D.Project(p, canvas.Size, sceneManager.Camera)).ToList();
 
                 for (int i = 0; i < projected.Count; i++)
                 {
@@ -92,7 +92,7 @@ namespace Figuras3D_Proyecto.Services
             {
                 Shape3D workingShape = shape.Clone();
                 workingShape.ApplyTransformations();
-                var projected = workingShape.Points.Select(p => Projection3D.Project(p, canvas.Size)).ToList();
+                var projected = workingShape.Points.Select(p => Projection3D.Project(p, canvas.Size, sceneManager.Camera)).ToList();
 
                 foreach (var face in workingShape.Faces)
                 {
@@ -123,7 +123,7 @@ namespace Figuras3D_Proyecto.Services
             {
                 Shape3D workingShape = shape.Clone();
                 workingShape.ApplyTransformations();
-                var projected = workingShape.Points.Select(p => Projection3D.Project(p, canvas.Size)).ToList();
+                var projected = workingShape.Points.Select(p => Projection3D.Project(p, canvas.Size, sceneManager.Camera)).ToList();
 
                 foreach (var face in workingShape.Faces)
                 {
@@ -155,7 +155,7 @@ namespace Figuras3D_Proyecto.Services
             {
                 Shape3D workingShape = shape.Clone();
                 workingShape.ApplyTransformations();
-                var projected = workingShape.Points.Select(p => Projection3D.Project(p, canvas.Size)).ToList();
+                var projected = workingShape.Points.Select(p => Projection3D.Project(p, canvas.Size, sceneManager.Camera)).ToList();
 
                 foreach (var face in shape.Faces)
                 {
@@ -188,7 +188,7 @@ namespace Figuras3D_Proyecto.Services
             {
                 Shape3D workingShape = shape.Clone();
                 workingShape.ApplyTransformations();
-                var projected = workingShape.Points.Select(p => Projection3D.Project(p, canvas.Size)).ToList();
+                var projected = workingShape.Points.Select(p => Projection3D.Project(p, canvas.Size, sceneManager.Camera)).ToList();
 
                 foreach (var face in workingShape.Faces)
                 {
